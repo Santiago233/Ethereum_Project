@@ -10,13 +10,18 @@ destfilename = "J:\\Clients_new.csv"
 #csv文件太大，影响读取速度，选择csv文件部分读取
 
 tmpdata = pd.read_csv(filename, low_memory=False,nrows=5000000)
-tmpdata.to_csv(tmpfilename, index = 0, header = 1)
+#去除列名自带的空格
+tmpcolumns = tmpdata.columns
+newcolumns = []
+for column in tmpcolumns:
+	newcolumns.append(column.replace(' ', ''))
+tmpdata.to_csv(tmpfilename, index = 0, header = newcolumns)
 print("Step 0!")
 
 with open(tmpfilename, 'r') as csvfile:
 	reader = csv.DictReader(csvfile)
-	column_from = [row[' from'] for row in reader]
-	column_to = [row[' to'] for row in reader]
+	column_from = [row['from'] for row in reader]
+	column_to = [row['to'] for row in reader]
 	print("Step 1!")
 	column_clients = list(set(column_from + column_to)) #remove duplicates
 	print("Step 2!")

@@ -12,3 +12,9 @@ Step 3:transaction_getclients.py
 Step 4:transaction_addlabel.py
 给Transaction.csv文件的表头添加label标签
 (使用部分Transaction数据，所以实则使用Transaction_tmp.csv文件)
+
+Step 5:transaction_to_block.py
+建立transaction和block的关系
+(transaction -> block)
+
+Step 6:clients_to_transaction.py

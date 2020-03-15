@@ -8,9 +8,12 @@ dest_filename = "J:\\Block_new.csv"
 
 source = pd.read_csv(source_filename, low_memory=False)
 source['label'] = 'block'
-
-source.to_csv(dest_filename, index = 0, header = 1)
-	#columns = ['blockNumber', 'timestamp', 'size', 'difficulty', 'transactionCount', 'minerAddress', 'minerExtra', 'gasLimit', 'gasUsed', 'minGasPrice', 'maxGasPrice', 'avgGasPrice', 'label']
+#去除列名自带的空格
+tmpcolumns = source.columns
+newcolumns = []
+for column in tmpcolumns:
+	newcolumns.append(column.replace(' ', ''))
+source.to_csv(dest_filename, index = 0, header = newcolumns)
 
 #去除最后一行空行
 '''
@@ -29,5 +32,3 @@ writeFile.write(Filedata.rstrip())
 writeFile.close()
 
 print("Success Edition!")
-
-#代码得到的Block_new.csv的表头最后一列少一个空格，此处之后注意
