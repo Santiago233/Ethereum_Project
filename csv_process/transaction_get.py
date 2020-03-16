@@ -18,12 +18,18 @@ for column in tmpcolumns:
 tmpdata.to_csv(tmpfilename, index = 0, header = newcolumns)
 print("Step 0!")
 
-with open(tmpfilename, 'r') as csvfile:
-	reader = csv.DictReader(csvfile)
-	column_from = [row['from'] for row in reader]
-	column_to = [row['to'] for row in reader]
+with open(tmpfilename, 'r') as csvfile_from:
+	reader_from = csv.DictReader(csvfile_from)
+	column_from = [row['from'] for row in reader_from]
+with open(tmpfilename, 'r') as csvfile_to:
+	reader_to = csv.DictReader(csvfile_to)
+	column_to = [row['to'] for row in reader_to]
+	#assert(0)
 	print("Step 1!")
-	column_clients = list(set(column_from + column_to)) #remove duplicates
+	#column_clients = list(set(column_from + column_to)) #remove duplicates
+	column_to.extend(column_from)
+	column_clients = list(set(column_to))
+	#column_clients = {}.fromkeys(column_from).keys()
 	print("Step 2!")
 	#print(column_clients)
 

@@ -27,4 +27,4 @@ Step 6:client_to_transaction.py
 将nodes文件改成id:ID(block)、id:ID(transaction)、id:ID(client)的格式；
 将relationships文件改成:START_ID(transaction),:END_ID(block),:TYPE之类的格式。
 
-具体指令：
+具体指令：./neo4j-admin import --nodes ../import/Block_new.csv --nodes ../import/Clients_new.csv --nodes ../import/Transaction_new.csv --relationships ../import/Client_to_Transaction.csv --relationships ../import/Transaction_to_Block.csv --relationships ../import/Transaction_to_Client.csv
