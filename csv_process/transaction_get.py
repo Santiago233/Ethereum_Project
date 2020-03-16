@@ -33,11 +33,10 @@ with open(tmpfilename, 'r') as csvfile:
 		every_client_list = []
 		every_client_list.append(every_client)
 		#print(every_client_list)
-		every_client_list.insert(0,"client" + str(number))
+		every_client_list.insert(0,"client" + every_client)
 		#print(every_client_list)
 		every_client_list.append("client")
 		last_clients.append(every_client_list)
-		number += 1
 	#print(last_clients)
 
 	name = ['id', 'address', 'label']

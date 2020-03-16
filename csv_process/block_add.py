@@ -2,18 +2,29 @@
 import pandas as pd
 import os
 import sys
+import csv
 
 source_filename = "J:\\Block.csv"
 dest_filename = "J:\\Block_new.csv"
 
+#添加id的索引，方便后面生成关系的csv文件
+with open(source_filename, 'r', encoding='UTF-8') as csvfile:
+	reader = csv.DictReader(csvfile)
+	Numbers = [row['blockNumber'] for row in reader]
+	for index in range(len(Numbers)):
+		Numbers[index] = "block" + Numbers[index]
+
 source = pd.read_csv(source_filename, low_memory=False)
 source['label'] = 'block'
+source.insert(0, 'id', Numbers)
+
 #去除列名自带的空格
 tmpcolumns = source.columns
 newcolumns = []
 for column in tmpcolumns:
 	newcolumns.append(column.replace(' ', ''))
-source.to_csv(dest_filename, index = 0, header = newcolumns)
+
+source.to_csv(dest_filename, index = False, header = newcolumns)
 
 #去除最后一行空行
 '''
