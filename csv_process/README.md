@@ -20,3 +20,11 @@ Step 5:transaction_to_block.py
 Step 6:client_to_transaction.py
 建立client和transaction的关系
 (包括in和out)
+
+
+备注：代码生成的csv表头可能不符合neo4j使用import命令导入csv文件的格式，为了不再次生成便直接在最终的csv文件中进行了修改————
+
+将nodes文件改成id:ID(block)、id:ID(transaction)、id:ID(client)的格式；
+将relationships文件改成:START_ID(transaction),:END_ID(block),:TYPE之类的格式。
+
+具体指令：
