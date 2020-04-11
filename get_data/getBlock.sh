@@ -4,7 +4,7 @@ do
 	firstbeginblock=$(($i*1000))
 	mkdir -p block/${firstbeginblock}
 	path="./block/$firstbeginblock"
-	for((j=0;j<=999;j++));
+	for((j=0;j<1000;j++));
 	do
 		beginblock=$(($i*1000+$j))
 		endblock=$(($beginblock))
