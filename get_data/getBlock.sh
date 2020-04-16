@@ -1,5 +1,5 @@
-#选取其中前7000000块block
-for((i=0;i<7000;i++));
+#选取其中前9000000块block
+for((i=0;i<9000;i++));
 do
 	firstbeginblock=$(($i*1000))
 	mkdir -p block/${firstbeginblock}

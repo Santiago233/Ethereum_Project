@@ -13,7 +13,7 @@ using json = nlohmann::json;
 string Block = "Blcok.csv";
 string Transaction = "Transaction.csv";
 
-int first_num = 7000;
+int first_num = 9000;
 int second_num = 1000;
 
 FILE * f1;

@@ -6,11 +6,13 @@ Project for my Graduation paper
 Step1：getBlock.sh、getReceipt.sh
 因为Block和NormalTransaction只需要block和receipt两个部分，所以只需要获取这两部分便可(实际上运行getBlcok.sh得到的数据便够用)
 
+数据的获取过程利用parity，需要先本地节点同步了数据才能运行脚本，否则获取都是null数据
+
 获取的block数据结构有：result{author、difficulty、extraData、gasLimit、gasUsed、hash、logsBloom、miner、mixHash、nonce、number、parentHash、receiptsRoot、sealFields[,]、sha3Uncles、size、stateRoot、timestamp、totalDifficulty、transactions[{blockHash,blockNumber,chainId,condition,creates,from,gas,gasPrice,hash,input,nonce,publicKey,r,raw,s,standardV,to,transactionIndex,v,value},{}...]、transactionsRoot、uncles[]}
 
 获取的receipt数据结构有：result[{blockHash、blockNumber、contractAddress、cumulativeGasUsed、from、gasUsed、logs[{address、blockHash、blockNumber、data、logIndex、removed、topics[,...]、transactionHash、transactionIndex、transactionLogIndex、type},{}...]、logsBloom、root、to、transactionHash、transactionIndex},{}...]
 
-block文件夹和receipt文件夹分别是分类获取的数据文件夹(为了方便测试，选取了部分重复数据)
+block文件夹和receipt文件夹分别是分类获取的数据文件夹(为了方便测试，选取了部分重复数据，blockNumber为0xb7acf)
 
 Step2：getDataset.cpp(头文件json.hpp)
 根据.sh获取的源数据进行处理并且写入csv文件(Block.csv和Transaction.csv)
