@@ -10,7 +10,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-string Block = "Blcok.csv";
+string Block = "Block.csv";
 string Transaction = "Transaction.csv";
 
 int first_num = 9000;
