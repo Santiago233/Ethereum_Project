@@ -33,7 +33,7 @@ def Client_caculate_frequence():
 	timestamp_max = eval(input())
 	count = 0
 	for transaction in transactions:
-		timestamp = eval(transaction['transaction']["timestamp"])
+		timestamp = eval(transaction["transaction"]["timestamp"])
 		if(timestamp >= timestamp_min and timestamp <= timestamp_max):
 			count += 1
 	print("该节点在该时间段的交易数目为：", count)
@@ -44,12 +44,30 @@ def Client_caculate_starttime():
 	transactions = transaction_in + transaction_out
 	starttime = 0xffffffff
 	for transaction in transactions:
-		timestamp = eval(transaction['transaction']["timestamp"])
+		timestamp = eval(transaction["transaction"]["timestamp"])
 		if(timestamp < starttime):
 			starttime = timestamp
 	time_local = time.localtime(starttime)
 	date = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
-	print("该节点发起交易的时间为：", date)
+	print("该节点最早发起交易的时间为：", date)
+
+def Client_find_ObjectClient():
+	transaction_in, transaction_out = Client_get_transaction()
+	Objectaddress = []
+	for transaction in transaction_in:
+		address = transaction["transaction"]["from"]
+		Objectaddress.applend(address)
+	for transaction in transaction_out:
+		address = transaction["transaction"]["to"]
+		Objectaddress.applend(address)
+	Objectaddress = list(set(Objectaddress))
+	ObjectClient = []
+	for address in Objectaddress:
+		client_data = graph.data('match(client {address:"'+ address +'"}) return client')
+		ObjectClient.applend(client_data["client"])
+	print("该节点的交易对象有：")
+	for client in ObjectClient:
+		print(client)
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
@@ -76,7 +94,8 @@ def basic_api():
 		#print("TODO5")
 		Client_caculate_starttime()
 	elif(select_two == 6):
-		print("TODO6")
+		#print("TODO6")
+		Client_find_ObjectClient()
 	elif(select_two == 7):
 		print("TODO7")
 	elif(select_two == 8):
