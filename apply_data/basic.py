@@ -7,8 +7,8 @@ def Client_find_degree():
 	print("请输入节点的address")
 	address = input()
 	in_count = out_count = 0
-	transaction_in = graph.data('match(client {label:{}, id:{}, address:{}})-[in]->(transaction) return transaction'.format(label, id_, address))
-	transaction_out = graph.data('match(transaction)-[out]->(client {label:{}, id:{}, address:{}}) return transaction'.format(label, id_, address))
+        transaction_in = graph.data('match(client {label:'+label+',id:'+id_+',address:'+address+'})-[in]->(transaction) return transaction')
+        transaction_out = graph.data('match(transaction)-[out]->(client {label:'+label+',id:'+id_+',address:'+address+'}) return transaction')
 	for transaction in transaction_in:
 		in_count += 1
 	for transaction in transaction_out:
