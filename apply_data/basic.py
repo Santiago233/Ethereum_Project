@@ -29,6 +29,8 @@ def Client_find_with_many_transactions():
 	clients = graph.data('match(client {label:"client"}) return client')
 	clients_dict = {}
 	for client in clients:
+		if(client["client"]["id"] == "client")
+			continue
 		address = client["client"]["address"]
 		transaction_in, transaction_out = Client_get_transaction_by_property(address)
 		count = len(transaction_in) + len(transaction_out)
