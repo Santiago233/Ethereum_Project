@@ -1,14 +1,18 @@
 from graph import graph
 
-def Client_find_degree():
+def Client_get_transaction():
 	label = "client"
 	print("请输入节点的id")
 	id_ = input()
 	print("请输入节点的address")
 	address = input()
-	in_count = out_count = 0
 	transaction_in = graph.data('match(client {label:"'+ label +'",id:"'+ id_ +'",address:"'+ address +'"})-[in]->(transaction) return transaction')
 	transaction_out = graph.data('match(transaction)-[out]->(client {label:"'+ label +'",id:"'+ id_ +'",address:"'+ address +'"}) return transaction')
+	return transaction_in, transaction_out
+
+def Client_find_degree():
+	transaction_in, transaction_out = Client_get_transaction()
+	in_count = out_count = 0
 	for transaction in transaction_in:
 		in_count += 1
 	for transaction in transaction_out:
@@ -16,6 +20,20 @@ def Client_find_degree():
 	print("该节点的出度为：", in_count)
 	print("该节点的入度为：", out_count)
 	print("该节点的出入度比值为：%.3f" % (in_count/out_count))
+
+def Client_caculate_frequence():
+	transaction_in, transaction_out = Client_get_transaction()
+	transactions = transaction_in + transaction_out
+	print("请输入查询时间(timestamp)段的上限")
+	timestamp_min = int(input())
+	print("请输入查询时间(timestamp)段的下限")
+	timestamp_max = int(input())
+	count = 0
+	for transaction in transactions:
+		timestamp = int(transaction['transaction']["timestamp"])
+		if(timestamp >= timestamp_min && timestamp <= timestamp_max):
+			count += 1
+	print("该节点在该时间段的交易数目为：", count)
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
@@ -31,11 +49,13 @@ def basic_api():
 	if(select_two == 1):
 		print("TODO1")
 	elif(select_two == 2):
+		#print("TODO2")
 		Client_find_degree()
 	elif(select_two == 3):
 		print("TODO3")
 	elif(select_two == 4):
-		print("TODO4")
+		#print("TODO4")
+		Client_caculate_frequence()
 	elif(select_two == 5):
 		print("TODO5")
 	elif(select_two == 6):
