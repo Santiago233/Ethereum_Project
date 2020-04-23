@@ -55,16 +55,17 @@ def Client_find_ObjectClient():
 	transaction_in, transaction_out = Client_get_transaction()
 	Objectaddress = []
 	for transaction in transaction_in:
-		address = transaction["transaction"]["from"]
-		Objectaddress.applend(address)
-	for transaction in transaction_out:
 		address = transaction["transaction"]["to"]
-		Objectaddress.applend(address)
+		Objectaddress.append(address)
+	for transaction in transaction_out:
+		address = transaction["transaction"]["from"]
+		Objectaddress.append(address)
 	Objectaddress = list(set(Objectaddress))
 	ObjectClient = []
 	for address in Objectaddress:
 		client_data = graph.data('match(client {address:"'+ address +'"}) return client')
-		ObjectClient.applend(client_data["client"])
+		print(type(client_data[0]["client"]))
+                ObjectClient.append(dict(client_data[0]["client"]))
 	print("该节点的交易对象有：")
 	for client in ObjectClient:
 		print(client)
