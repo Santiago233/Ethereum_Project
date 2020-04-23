@@ -1,16 +1,18 @@
 from graph import graph
 import time
 
+def Client_get_transaction_by_property(address):
+	transaction_in = graph.data('match(client {label:"client", address:"'+ address +'"})-[in]->(transaction) return transaction')
+	transaction_out = graph.data('match(transaction)-[out]->(client {label:"client", address:"'+ address +'"}) return transaction')
+	return transaction_in, transaction_out
+
 def Client_get_transaction():
 	#用于测试节点的address为0x5a8faf30a107f916c9adddfa0d285083355c9c92
-	label = "client"
-	print("请输入节点的id")
-	id_ = input()
 	print("请输入节点的address")
 	address = input()
-	transaction_in = graph.data('match(client {label:"'+ label +'",id:"'+ id_ +'",address:"'+ address +'"})-[in]->(transaction) return transaction')
-	transaction_out = graph.data('match(transaction)-[out]->(client {label:"'+ label +'",id:"'+ id_ +'",address:"'+ address +'"}) return transaction')
+	transaction_in, transaction_out = Client_get_transaction_by_property(address)
 	return transaction_in, transaction_out
+	
 
 def Client_find_degree():
 	transaction_in, transaction_out = Client_get_transaction()
@@ -22,6 +24,22 @@ def Client_find_degree():
 	print("该节点的出度为：", in_count)
 	print("该节点的入度为：", out_count)
 	print("该节点的出入度比值为：%.3f" % (in_count/out_count))
+
+def Client_find_with_many_transactions():
+	clients = graph.data('match(client {label:"client"}) return client')
+	clients_dict = {}
+	for client in clients:
+		address = client["client"]["address"]
+		transaction_in, transaction_out = Client_get_transaction_by_property(address)
+		count = len(transaction_in) + len(transaction_out)
+		clients_dict[address] = count
+	new_clients_dict = sorted(clients_dict.items(), key = lambda x: x[1])
+	#取前万分之一作为交易量大的节点
+	max_number = len(new_clients_dict) / 10000
+	new_clients_dict = new_clients_dict[:max_number]
+	print("以下是交易量较大的节点")
+	for client in new_clients_dict:
+		print("address:%s, 交易量为:%d", client[0], client[1])
 
 def Client_caculate_frequence():
 	transaction_in, transaction_out = Client_get_transaction()
@@ -37,7 +55,7 @@ def Client_caculate_frequence():
 		if(timestamp >= timestamp_min and timestamp <= timestamp_max):
 			count += 1
 	print("该节点在该时间段的交易数目为：", count)
-	#TODO：判断交易频率是否较低
+	#TODO：判断交易频率是否高低
 
 def Client_caculate_starttime():
 	transaction_in, transaction_out = Client_get_transaction()
@@ -64,11 +82,11 @@ def Client_find_ObjectClient():
 	ObjectClient = []
 	for address in Objectaddress:
 		client_data = graph.data('match(client {address:"'+ address +'"}) return client')
-		print(type(client_data[0]["client"]))
+		#print(type(client_data[0]["client"]))
 		ObjectClient.append(dict(client_data[0]["client"]))
 	print("该节点的交易对象有：")
 	for client in ObjectClient:
-		print(client)
+		print("address:", client["address"])
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
@@ -78,8 +96,7 @@ def basic_api():
 	print("4.查询图中某个节点在某个时间段的交易频率")
 	print("5.查询图中某个节点发起交易的时间")
 	print("6.查询图中某个节点的交易对象")
-	print("7.查询图中某个节点是否为新注册的节点")
-	print("8.返回上一级")
+	print("7.返回上一级")
 	select_two = int(input())
 	if(select_two == 1):
 		print("TODO1")
@@ -87,7 +104,8 @@ def basic_api():
 		#print("TODO2")
 		Client_find_degree()
 	elif(select_two == 3):
-		print("TODO3")
+		#print("TODO3")
+		Client_find_with_many_transactions()
 	elif(select_two == 4):
 		#print("TODO4")
 		Client_caculate_frequence()
@@ -98,10 +116,7 @@ def basic_api():
 		#print("TODO6")
 		Client_find_ObjectClient()
 	elif(select_two == 7):
-		print("TODO7")
-	elif(select_two == 8):
 		print("exit")
-		#nothing to do
 	else:
 		print("Wrong!请重新选择具体查询方式(输入数字)")
 		basic_api()
