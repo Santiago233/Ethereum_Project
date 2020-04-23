@@ -24,14 +24,14 @@ def Client_find_degree():
 def Client_caculate_frequence():
 	transaction_in, transaction_out = Client_get_transaction()
 	transactions = transaction_in + transaction_out
-	print("请输入查询时间(timestamp)段的上限")
-	timestamp_min = int(input())
 	print("请输入查询时间(timestamp)段的下限")
-	timestamp_max = int(input())
+	timestamp_min = eval(input())
+	print("请输入查询时间(timestamp)段的上限")
+	timestamp_max = eval(input())
 	count = 0
 	for transaction in transactions:
-		timestamp = int(transaction['transaction']["timestamp"])
-		if(timestamp >= timestamp_min && timestamp <= timestamp_max):
+		timestamp = eval(transaction['transaction']["timestamp"])
+		if(timestamp >= timestamp_min and timestamp <= timestamp_max):
 			count += 1
 	print("该节点在该时间段的交易数目为：", count)
 
