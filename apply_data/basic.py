@@ -1,6 +1,7 @@
 from graph import graph
 
 def Client_get_transaction():
+	#用于测试节点的address为0x5a8faf30a107f916c9adddfa0d285083355c9c92
 	label = "client"
 	print("请输入节点的id")
 	id_ = input()
@@ -24,6 +25,7 @@ def Client_find_degree():
 def Client_caculate_frequence():
 	transaction_in, transaction_out = Client_get_transaction()
 	transactions = transaction_in + transaction_out
+	#print(len(transaction_in), len(transaction_out), len(transactions))
 	print("请输入查询时间(timestamp)段的下限")
 	timestamp_min = eval(input())
 	print("请输入查询时间(timestamp)段的上限")
@@ -34,6 +36,17 @@ def Client_caculate_frequence():
 		if(timestamp >= timestamp_min and timestamp <= timestamp_max):
 			count += 1
 	print("该节点在该时间段的交易数目为：", count)
+	#TODO：判断交易频率是否较低
+
+def Client_caculate_starttime():
+	transaction_in, transaction_out = Client_get_transaction()
+	transactions = transaction_in + transaction_out
+	starttime = 0xffffff
+	for transaction in transactions:
+		timestamp = eval(transaction['transaction']["timestamp"])
+		if(timestamp < starttime):
+			starttime = timestamp
+	print("该节点发起交易的时间为：", hex(starttime))
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
@@ -57,7 +70,8 @@ def basic_api():
 		#print("TODO4")
 		Client_caculate_frequence()
 	elif(select_two == 5):
-		print("TODO5")
+		#print("TODO5")
+		Client_caculate_starttime()
 	elif(select_two == 6):
 		print("TODO6")
 	elif(select_two == 7):
