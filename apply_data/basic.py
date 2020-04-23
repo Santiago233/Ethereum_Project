@@ -1,6 +1,19 @@
 from main import graph
 
 def Client_find_degree():
+	#label = "client"
+	#print("请输入节点的id")
+	#id = input()
+	#print("请输入节点的address")
+	#address = input()
+	#client = graph.nodes.match('client', id = id, address = address, label = label).first()
+	client = graph.nodes.match('client', address = "0x5a8faf30a107f916c9adddfa0d285083355c9c92").first()
+	in_count = 0, out_count = 0
+	for rel in graph.match((client, ), r_type = "in"):
+		in_count += 1
+	for rel in graph.match(( ,client), r_type = "out"):
+		out_count += 1
+	print(in_count, out_count)
 
 def basic_api():
 	print("1.查询图中存在的环")
