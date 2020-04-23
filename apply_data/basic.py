@@ -1,19 +1,21 @@
 from graph import graph
 
 def Client_find_degree():
-	#label = "client"
-	#print("请输入节点的id")
-	#id = input()
-	#print("请输入节点的address")
-	#address = input()
+	label = "client"
+	print("请输入节点的id")
+	id_ = input()
+	print("请输入节点的address")
+	address = input()
 	in_count = out_count = 0
-	transaction_in = graph.data('match(client {address:"0x5a8faf30a107f916c9adddfa0d285083355c9c92"})-[in]->(transaction) return transaction')
-	transaction_out = graph.data('match(transaction)-[out]->(client {address:"0x5a8faf30a107f916c9adddfa0d285083355c9c92"}) return transaction')
+	transaction_in = graph.data('match(client {label:{}, id:{}, address:{}})-[in]->(transaction) return transaction'.format(label, id_, address))
+	transaction_out = graph.data('match(transaction)-[out]->(client {label:{}, id:{}, address:{}}) return transaction'.format(label, id_, address))
 	for transaction in transaction_in:
 		in_count += 1
 	for transaction in transaction_out:
 		out_count += 1
-	print(in_count, out_count)
+	print("该节点的出度为：", in_count)
+	print("该节点的入度为：", out_count)
+	print("该节点的出入度比值为：%.3f" % (in_count/out_count))
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
