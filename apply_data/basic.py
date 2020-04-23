@@ -1,4 +1,5 @@
 from graph import graph
+import time
 
 def Client_get_transaction():
 	#用于测试节点的address为0x5a8faf30a107f916c9adddfa0d285083355c9c92
@@ -41,12 +42,14 @@ def Client_caculate_frequence():
 def Client_caculate_starttime():
 	transaction_in, transaction_out = Client_get_transaction()
 	transactions = transaction_in + transaction_out
-	starttime = 0xffffff
+	starttime = 0xffffffff
 	for transaction in transactions:
 		timestamp = eval(transaction['transaction']["timestamp"])
 		if(timestamp < starttime):
 			starttime = timestamp
-	print("该节点发起交易的时间为：", hex(starttime))
+	time_local = time.localtime(starttime)
+	date = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
+	print("该节点发起交易的时间为：", date)
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
