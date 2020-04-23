@@ -6,12 +6,12 @@ def Client_find_degree():
 	#id = input()
 	#print("请输入节点的address")
 	#address = input()
-	#client = graph.nodes.match('client', id = id, address = address, label = label).first()
-	client = graph.nodes.match('client', address = "0x5a8faf30a107f916c9adddfa0d285083355c9c92").first()
 	in_count = out_count = 0
-	for rel in graph.match((client, ), r_type = "in"):
+	transaction_in = graph.data('match(client {address = "0x5a8faf30a107f916c9adddfa0d285083355c9c92"})-[in]->(transaction) return transaction')
+	transaction_out = graph.data('match(transaction)-[out]->(client {address = "0x5a8faf30a107f916c9adddfa0d285083355c9c92"}) return transaction')
+	for transaction in transaction_in:
 		in_count += 1
-	for rel in graph.match((client, ), r_type = "out"):
+	for transaction in transaction_out:
 		out_count += 1
 	print(in_count, out_count)
 
