@@ -35,10 +35,13 @@ def Client_find_with_many_transactions():
 		transaction_in, transaction_out = Client_get_transaction_by_property(address)
 		count = len(transaction_in) + len(transaction_out)
 		clients_dict[address] = count
+	print(clients_dict)
 	new_clients_dict = sorted(clients_dict.items(), key = lambda x: x[1])
 	#取前万分之一作为交易量大的节点
 	max_number = len(new_clients_dict) / 10000
+	print(max_number)
 	new_clients_dict = new_clients_dict[:max_number]
+	print(new_clients_dict)
 	print("以下是交易量较大的节点")
 	for client in new_clients_dict:
 		print("address:%s, 交易量为:%d", client[0], client[1])
