@@ -72,14 +72,19 @@ def Client_find_with_many_transactions():
 		else:
 			clients_dict[address] = 1
 
-	new_clients_dict = sorted(clients_dict.items(), key = lambda x: x[1], reverse = True)
-	#取前万分之一作为交易量大的节点
-	max_number = len(new_clients_dict) // 10000
-	#取前100作为交易量大的节点
-	#max_number = 100
-	new_clients_dict = new_clients_dict[:max_number]
+	new_clients_dict_max = sorted(clients_dict.items(), key = lambda x: x[1], reverse = True)
+	new_clients_dict_min = sorted(clients_dict.items(), key = lambda x: x[1])
+	#取前万分之一作为交易量大的节点，后万分之一作为交易量小的节点(虽然实际大部分都是1)
+	number = len(new_clients_dict_max) // 10000
+	#取前100作为交易量大的节点，取后100作为交易量小的节点
+	#number = 100
+	new_clients_dict_max = new_clients_dict_max[:number]
 	print("以下是交易量较大的节点")
-	for client in new_clients_dict:
+	for client in new_clients_dict_max:
+		print("address:%s, 交易量为:%d" %(client[0], client[1]))
+	new_clients_dict_min = new_clients_dict_min[:number]
+	print("以下是交易量较小的节点")
+	for client in new_clients_dict_min:
 		print("address:%s, 交易量为:%d" %(client[0], client[1]))
 
 def Client_caculate_frequence():
@@ -133,7 +138,7 @@ def basic_api():
 	print("请选择具体查询方式(输入数字)：")
 	print("1.查询图中存在的环")
 	print("2.查询图中某个节点的出入度")
-	print("3.查询图中交易量较大的点")
+	print("3.查询图中交易量较大和较小的节点")
 	print("4.查询图中某个节点在某个时间段的交易频率")
 	print("5.查询图中某个节点发起交易的时间")
 	print("6.查询图中某个节点的交易对象")
