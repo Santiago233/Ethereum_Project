@@ -43,20 +43,22 @@ def Client_find_with_many_transactions():
 	clients_dict = {}
 	for client in clients:
 		address = client["client"]["address"]
-		if(clients_dict.has_key(address) == False):
-			clients_dict[address] = 1
-		else:
+		if address in clients_dict.keys():
 			count = clients_dict[address]
 			del clients_dict[address]
 			clients_dict[address] = count + 1
+		else:
+			clients_dict[address] = 1
 
-	new_clients_dict = sorted(clients_dict.items(), key = lambda x: x[1])
+	new_clients_dict = sorted(clients_dict.items(), key = lambda x: x[1], reverse = True)
 	#取前万分之一作为交易量大的节点
-	max_number = len(new_clients_dict) / 10000
+	max_number = len(new_clients_dict) // 10000
+	#取前100作为交易量大的节点
+	#max_number = 100
 	new_clients_dict = new_clients_dict[:max_number]
 	print("以下是交易量较大的节点")
 	for client in new_clients_dict:
-		print("address:%s, 交易量为:%d", client[0], client[1])
+		print("address:%s, 交易量为:%d" %(client[0], client[1]))
 
 def Client_caculate_frequence():
 	transaction_in, transaction_out = Client_get_transaction()
