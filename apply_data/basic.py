@@ -28,7 +28,10 @@ def Client_find_degree():
 def Client_find_with_many_transactions():
 	clients = graph.data('match(client {label:"client"}) return client')
 	clients_dict = {}
+	number = 0
 	for client in clients:
+		print(number)
+		number += 1
 		if(client["client"]["id"] == "client"):
 			continue
 		address = client["client"]["address"]
