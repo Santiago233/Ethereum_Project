@@ -7,12 +7,32 @@ def Client_get_transaction_by_property(address):
 	return transaction_in, transaction_out
 
 def Client_get_transaction():
-	#用于测试节点的address为0x5a8faf30a107f916c9adddfa0d285083355c9c92
+	#用于测试节点address为0x5a8faf30a107f916c9adddfa0d285083355c9c92
+	#用于测试节点to节点address为0x3cb9f9ee387168077aa3bcd9ea6e43cd7c79c540
 	print("请输入节点的address")
 	address = input()
 	transaction_in, transaction_out = Client_get_transaction_by_property(address)
 	return transaction_in, transaction_out
-	
+
+def Path_find_loop():
+	print("请指定环的最大长度")
+	max_number = input()
+	paths = []
+	clients = graph.data('match(client {label:"client"}) return client')
+	for client in clients:
+		if(client["client"]["id"] == "client"):
+			continue
+		address = client["client"]["address"]
+		data = graph.data('match path = (client1 {label:"client", address:"'+ address +'"})-[:in|:out*..'+ max_number +']->(client2 {label:"client", address:"'+ address +'"}) unwind nodes(path) as n with path, size(collect(distinct n)) as number where number = length(path) return nodes(path) as path_list')
+		for data_ in data:
+			concrete_path = data_["path_list"]
+			abstract_path = []
+			for node in concrete_path:
+				abstract_path.append(node["id"])
+			paths.append(abstract_path)
+	print("以下是存在的环")
+	for path in paths:
+		print(path)
 
 def Client_find_degree():
 	transaction_in, transaction_out = Client_get_transaction()
@@ -42,6 +62,8 @@ def Client_find_with_many_transactions():
 	clients = client_in + client_out
 	clients_dict = {}
 	for client in clients:
+		if(client["client"]["id"] == "client"):
+			continue
 		address = client["client"]["address"]
 		if address in clients_dict.keys():
 			count = clients_dict[address]
@@ -118,7 +140,8 @@ def basic_api():
 	print("7.返回上一级")
 	select_two = int(input())
 	if(select_two == 1):
-		print("TODO1")
+		#print("TODO1")
+		Path_find_loop()
 	elif(select_two == 2):
 		#print("TODO2")
 		Client_find_degree()
