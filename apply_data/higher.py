@@ -42,7 +42,7 @@ def Client_whether_illegal_transaction():
 	percent = out_count / counts
 	if(counts >= 200 and percent >= 0.85):
 		object_counts = 0
-		for transaction in transaction_out:
+		for transaction in transaction_in:	#此处用于测试，其实应该是transaction_out
 			address = transaction["transaction"]["from"]
 			object_in, object_out = basic.Client_get_transaction_by_property(address)
 			number = len(object_in) + len(object_out)

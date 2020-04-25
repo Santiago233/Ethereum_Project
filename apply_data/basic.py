@@ -8,7 +8,8 @@ def Client_get_transaction_by_property(address):
 
 def Client_get_transaction():
 	#用于测试节点address为0x5a8faf30a107f916c9adddfa0d285083355c9c92
-	#用于测试节点to节点address为0x3cb9f9ee387168077aa3bcd9ea6e43cd7c79c540
+	#用于测试节点一个to节点address为0x3cb9f9ee387168077aa3bcd9ea6e43cd7c79c540
+	#用于测试节点一个from节点address为0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5
 	print("请输入节点的address")
 	address = input()
 	transaction_in, transaction_out = Client_get_transaction_by_property(address)
@@ -36,9 +37,12 @@ def Client_find_path_with_loop():
 		for node in concrete_path:
 			abstract_path.append(node["id"])
 		paths.append(abstract_path)
-	print("以下是存在的环")
-	for path in paths:
-		print(path)
+	if(len(paths) != 0):
+		print("以下是该节点指定长度内存在的环")
+		for path in paths:
+			print(path)
+	else:
+		print("该节点不存在指定长度内的环")
 
 def Client_find_degree():
 	in_count, out_count = Client_find_degree_by_transaction()
@@ -90,13 +94,13 @@ def Client_find_with_many_transactions():
 		print("address:%s, 交易量为:%d" %(client[0], client[1]))
 
 def Client_caculate_frequence():
-	transaction_in, transaction_out = Client_get_transaction()
-	transactions = transaction_in + transaction_out
-	#print(len(transaction_in), len(transaction_out), len(transactions))
 	print("请输入查询时间(timestamp)段的下限")
 	timestamp_min = eval(input())
 	print("请输入查询时间(timestamp)段的上限")
 	timestamp_max = eval(input())
+	transaction_in, transaction_out = Client_get_transaction()
+	transactions = transaction_in + transaction_out
+	#print(len(transaction_in), len(transaction_out), len(transactions))
 	count = 0
 	for transaction in transactions:
 		timestamp = eval(transaction["transaction"]["timestamp"])
