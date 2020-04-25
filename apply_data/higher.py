@@ -40,18 +40,18 @@ def Client_whether_illegal_transaction():
 		out_count += 1
 	counts = in_count + out_count
 	percent = out_count / counts
-	if(counts >= 200 and percent >= 0.85):
+	if(counts >= 200 and percent >= 0.9):
 		object_counts = 0
-		for transaction in transaction_in:	#此处用于测试，其实应该是transaction_out
+		for transaction in transaction_out:
 			address = transaction["transaction"]["from"]
 			object_in, object_out = basic.Client_get_transaction_by_property(address)
 			number = len(object_in) + len(object_out)
-			print("number:", number)
+			#print("number:", number)
 			if(number <= 5):
 				object_counts += 1
-		print(object_counts)
+		#print(object_counts)
 		new_percent = object_counts / out_count
-		if(new_percent >= 0.85):
+		if(new_percent >= 0.9):
 			print("该节点可能作为非法交易组织者")
 			return
 	print("该节点应该未作为非法交易组织者")
@@ -62,8 +62,7 @@ def higher_api():
 	print("2.查询图中某个节点是否可能被盗用账号")
 	print("3.查询图中某个节点是否可能作为避税港/资产转移地")
 	print("4.查询图中某个节点是否可能作为非法交易组织者")
-	print("5.查询图中某个节点是否可能作为犯罪分子的销赃账号")
-	print("6.返回上一级")
+	print("5.返回上一级")
 	select_two = int(input())
 	if(select_two == 1):
 		print("TODO1")
@@ -77,9 +76,9 @@ def higher_api():
 		#print("TODO4")
 		Client_whether_illegal_transaction()
 	elif(select_two == 5):
-		print("TODO5")
-	elif(select_two == 6):
 		print("exit")
 	else:
 		print("Wrong!请重新选择具体查询方式(输入数字)")
 		higher_api()
+
+#存在情况：考虑节点A专门向节点B交易的情况
