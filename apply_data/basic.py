@@ -14,7 +14,7 @@ def Client_get_transaction():
 	transaction_in, transaction_out = Client_get_transaction_by_property(address)
 	return transaction_in, transaction_out
 
-def Client_find_degree_by_transaction()
+def Client_find_degree_by_transaction():
 	transaction_in, transaction_out = Client_get_transaction()
 	in_count = out_count = 0
 	for transaction in transaction_in:
