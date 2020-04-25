@@ -14,36 +14,38 @@ def Client_get_transaction():
 	transaction_in, transaction_out = Client_get_transaction_by_property(address)
 	return transaction_in, transaction_out
 
-def Path_find_loop():
-	print("请指定环的最大长度")
-	max_number = input()
-	paths = []
-	clients = graph.data('match(client {label:"client"}) return client')
-	for client in clients:
-		if(client["client"]["id"] == "client"):
-			continue
-		address = client["client"]["address"]
-		data = graph.data('match path = (client1 {label:"client", address:"'+ address +'"})-[:in|:out*..'+ max_number +']->(client2 {label:"client", address:"'+ address +'"}) unwind nodes(path) as n with path, size(collect(distinct n)) as number where number = length(path) return nodes(path) as path_list')
-		for data_ in data:
-			concrete_path = data_["path_list"]
-			abstract_path = []
-			for node in concrete_path:
-				abstract_path.append(node["id"])
-			paths.append(abstract_path)
-	print("以下是存在的环")
-	for path in paths:
-		print(path)
-
-def Client_find_degree():
+def Client_find_degree_by_transaction()
 	transaction_in, transaction_out = Client_get_transaction()
 	in_count = out_count = 0
 	for transaction in transaction_in:
 		in_count += 1
 	for transaction in transaction_out:
 		out_count += 1
+	return in_count, out_count
+
+def Client_find_path_with_loop():
+	print("请输入节点的address")
+	address = input()
+	print("请指定环的最大长度")
+	max_number = input()
+	paths = []
+	data = graph.data('match path = (client1 {label:"client", address:"'+ address +'"})-[:in|:out*..'+ max_number +']->(client2 {label:"client", address:"'+ address +'"}) unwind nodes(path) as n with path, size(collect(distinct n)) as number where number = length(path) return nodes(path) as path_list')
+	for data_ in data:
+		concrete_path = data_["path_list"]
+		abstract_path = []
+		for node in concrete_path:
+			abstract_path.append(node["id"])
+		paths.append(abstract_path)
+	print("以下是存在的环")
+	for path in paths:
+		print(path)
+
+def Client_find_degree():
+	in_count, out_count = Client_find_degree_by_transaction()
 	print("该节点的出度为：", in_count)
 	print("该节点的入度为：", out_count)
-	print("该节点的出入度比值为：%.3f" % (in_count/out_count))
+	if(out_count != 0):
+		print("该节点的出入度比值为：%.3f" % (in_count/out_count))
 
 def Client_find_with_many_transactions():
 	'''
@@ -130,13 +132,14 @@ def Client_find_ObjectClient():
 		client_data = graph.data('match(client {address:"'+ address +'"}) return client')
 		#print(type(client_data[0]["client"]))
 		ObjectClient.append(dict(client_data[0]["client"]))
-	print("该节点的交易对象有：")
-	for client in ObjectClient:
-		print("address:", client["address"])
+	if(len(ObjectClient) != 0):
+		print("该节点的交易对象有：")
+		for client in ObjectClient:
+			print("address:", client["address"])
 
 def basic_api():
 	print("请选择具体查询方式(输入数字)：")
-	print("1.查询图中存在的环")
+	print("1.查询图中是否存在某个节点的环")
 	print("2.查询图中某个节点的出入度")
 	print("3.查询图中交易量较大和较小的节点")
 	print("4.查询图中某个节点在某个时间段的交易频率")
@@ -146,7 +149,7 @@ def basic_api():
 	select_two = int(input())
 	if(select_two == 1):
 		#print("TODO1")
-		Path_find_loop()
+		Client_find_path_with_loop()
 	elif(select_two == 2):
 		#print("TODO2")
 		Client_find_degree()
