@@ -1,6 +1,9 @@
 from graph import graph
 import basic
 
+def Client_whether_launder():
+	print("TODO")
+
 def Client_whether_theft():
 	print("请输入节点的address")
 	address = input()
@@ -65,7 +68,8 @@ def higher_api():
 	print("5.返回上一级")
 	select_two = int(input())
 	if(select_two == 1):
-		print("TODO1")
+		#print("TODO1")
+		Client_whether_launder()
 	elif(select_two == 2):
 		#print("TODO2")
 		Client_whether_theft()
