@@ -45,8 +45,11 @@ def Client_whether_illegal_transaction():
 		for transaction in transaction_out:
 			address = transaction["transaction"]["from"]
 			object_in, object_out = basic.Client_get_transaction_by_property(address)
-			if(len(object_in) + len(object_out) <= 5):
+			number = len(object_in) + len(object_out)
+			print("number:", number)
+			if(number <= 5):
 				object_counts += 1
+		print(object_counts)
 		new_percent = object_counts / out_count
 		if(new_percent >= 0.85):
 			print("该节点可能作为非法交易组织者")
