@@ -3,11 +3,11 @@ import basic
 import pandas as pd
 import math
 
-def Client_whether_launder_many_transaction():
+def Client_whether_launder_many_transaction(address):
 	#first_case:短时间大量交易，其中短时间定义为1天指标&邻近2天指标
-	transaction_in, transaction_out = basic.Client_get_transaction()
+	transaction_in, transaction_out = basic.Client_get_transaction_by_property(address)
 	counts = len(transaction_out)
-	print(counts)
+	#print(counts)
 	if(counts >= 100):
 		transactions = []
 		for transaction in transaction_out:
@@ -17,36 +17,54 @@ def Client_whether_launder_many_transaction():
 		max = new_transactions[counts - 1]
 		day_len = 60 * 60 * 24
 		days = math.ceil((max - min) / day_len)
-		print(days)
+		#print(days)
 		days_counts = [0] * days
 		for transaction in new_transactions:
 			day_number = math.floor((transaction - min) / day_len)
 			days_counts[day_number] += 1
-		print(days_counts)
-		print("请输入检查的比例")
-		percent = float(input())
+		#print(days_counts)
+		#print("请输入检查的比例")
+		#percent = float(input())
 		for day_number in range(days):
-			if(days_counts[day_number] >= counts * percent):
-				print("该节点可能发生了洗钱交易1")
+			if(days_counts[day_number] >= counts * 0.3):
+				print("该节点可能发生了洗钱交易")
 				return True
 			else:
-				if(day_number >= 1 and days_counts[day_number - 1] + days_counts[day_number] >= counts * percent * 2):
-					print("该节点可能发生了洗钱交易2")
+				if(day_number >= 1 and days_counts[day_number - 1] + days_counts[day_number] >= counts * 0.5):
+					print("该节点可能发生了洗钱交易")
 					return True
-				if(day_number <= days - 2 and days_counts[day_number] + days_counts[day_number + 1] >= counts * percent * 2):
-					print("该节点可能发生了洗钱交易3")
+				if(day_number <= days - 2 and days_counts[day_number] + days_counts[day_number + 1] >= counts * 0.5):
+					print("该节点可能发生了洗钱交易")
 					return True
 	return False
 
-def Client_whether_launder_with_block():
-	#second_case:查找因洗钱存在的环，其中环的最大长度定义为n
-	print("TODO")
+def Client_whether_launder_with_block(address):
+	#second_case:查找因洗钱存在的环，其中环的最大长度定义为step
+	step = 20
+	address = address
+	data = graph.data('match path = (client1 {label:"client", address:"'+ address +'"})-[:in|:out*..'+ step +']->(client2 {label:"client", address:"'+ address +'"}) unwind nodes(path) as n with path, size(collect(distinct n)) as number where number = length(path) return nodes(path) as path_list')
+	if(len(data) != 0):
+		give = 0
+		gas = 0
+		get = 0
+		for data_ in data:
+			concrete_path = data_["path_list"]
+			give += eval(concrete_path[1]["value"])
+			get += eval(concrete_path[len(concrete_path) - 2]["value"])
+			for node in concrete_path:
+				if(node["label"] == "transaction"):
+					gas += eval(node["gasPrice"])
+		if(get == give + gas):
+			print("该节点可能发生了洗钱交易")
+			return
+	print("该节点应该未进行洗钱交易")
 
 def Client_whether_launder():
-	first_case = Client_whether_launder_many_transaction()
+	print("请输入节点的address")
+	address = input()
+	first_case = Client_whether_launder_many_transaction(address)
 	if(first_case == False):
-		print("first_case不满足")
-		Client_whether_launder_with_block()
+		Client_whether_launder_with_block(address)
 
 def Client_whether_theft():
 	transaction_in, transaction_out = basic.Client_get_transaction()
@@ -64,7 +82,7 @@ def Client_whether_theft():
 		concrete_transaction["way"] = "to"
 		transactions.append(concrete_transaction)
 	new_transactions = sorted(transactions, key = lambda e:e["time"])
-	#判断数值中的异常
+	#判断数值中的异常——时间、频率、金额、对象
 
 def Client_whether_tax_evasion():
 	in_count, out_count = basic.Client_find_degree_by_transaction()	#出度是in_count，入度是out_count
