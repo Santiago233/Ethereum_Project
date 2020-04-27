@@ -1,14 +1,53 @@
 from graph import graph
 import basic
 import pandas as pd
+import math
 
-def Client_whether_launder():
+def Client_whether_launder_many_transaction():
+	#first_case:短时间大量交易，其中短时间定义为1天指标&邻近2天指标
+	percent = float(input())
+	transaction_in, transaction_out = basic.Client_get_transaction()
+	counts = len(transaction_out)
+	if(counts >= 100):
+		transactions = []
+		for transaction in transaction_out:
+			transactions.append(eval(transaction["transaction"]["timestamp"]))
+		new_transactions = sorted(transactions)
+		min = new_transactions[0]
+		max = new_transactions[counts - 1]
+		day_len = 60 * 60 * 24
+		days = math.ceil((max - min) / day_len)
+		print(days)
+		days_counts = [0] * days
+		print(days_counts)
+		for transaction in new_transactions:
+			day_number = math.floor((transaction - min) / day_len)
+			days_counts[day_number] += 1
+		for day_number in range(days):
+			if(days_counts[day_number] >= counts * percent):
+				print("该节点可能发生了洗钱交易")
+				return True
+			else:
+				if(day_number >= 1 and days_counts[day_number - 1] + days_counts[day_number] >= counts * percent * 2):
+					print("该节点可能发生了洗钱交易")
+					return True
+				if(day_number <= days - 2 and days_counts[day_number] + days_counts[day_number + 1] >= counts * percent * 2):
+					print("该节点可能发生了洗钱交易")
+					return True
+	return False
+
+def Client_whether_launder_with_block():
+	#second_case:查找因洗钱存在的环，其中环的最大长度定义为n
 	print("TODO")
 
+def Client_whether_launder():
+	first_case = Client_whether_launder_many_transaction()
+	if(first_case == False):
+		print("first_case不满足")
+		Client_whether_launder_with_block()
+
 def Client_whether_theft():
-	print("请输入节点的address")
-	address = input()
-	transaction_in, transaction_out = basic.Client_get_transaction_by_property(address)
+	transaction_in, transaction_out = basic.Client_get_transaction()
 	transactions = []
 	for transaction in transaction_in:
 		concrete_transaction = {}
@@ -36,23 +75,21 @@ def Client_whether_tax_evasion():
 		print("该节点应该不是避税港/资产转移地")
 
 def Client_whether_transfer_money():
-	print("请输入节点的address")
-	address = input()
-	transaction_in, transaction_out = basic.Client_get_transaction_by_property(address)
+	transaction_in, transaction_out = basic.Client_get_transaction()
 	values = []
 	for transaction in transaction_in:
 		#value数据普遍位数较多，故使用长度作为判断
 		value = len(transaction["transaction"]["value"])
-		print(value)
+		#print(value)
 		values.append(value)
 	values_p = pd.Series(values).describe()
 	Q1 = values_p['25%']
 	Q3 = values_p['75%']
 	IQR = Q3 - Q1
 	values_upper = Q3 + 1.5 * IQR
-	print(values_upper)
+	#print(values_upper)
 	for value in values:
-		if(value - values_upper >= 2.5):
+		if(value - values_upper >= 1.5):
 			print("该节点可能发生资产转移行为")
 			return
 	print("该节点应该尚未发生资产转移行为")
