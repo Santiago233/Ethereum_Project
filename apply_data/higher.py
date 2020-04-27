@@ -5,9 +5,9 @@ import math
 
 def Client_whether_launder_many_transaction():
 	#first_case:短时间大量交易，其中短时间定义为1天指标&邻近2天指标
-	percent = float(input())
 	transaction_in, transaction_out = basic.Client_get_transaction()
 	counts = len(transaction_out)
+	percent = float(input())
 	if(counts >= 100):
 		transactions = []
 		for transaction in transaction_out:
