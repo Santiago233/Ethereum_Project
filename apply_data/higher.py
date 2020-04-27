@@ -50,6 +50,7 @@ def Client_whether_transfer_money():
 	Q3 = values_p['75%']
 	IQR = Q3 - Q1
 	values_upper = Q3 + 1.5 * IQR
+	print(values_upper)
 	for value in values:
 		if(value - values_upper >= 2.5):
 			print("该节点可能发生资产转移行为")
