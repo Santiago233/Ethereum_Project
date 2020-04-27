@@ -7,6 +7,7 @@ def Client_whether_launder_many_transaction():
 	#first_case:短时间大量交易，其中短时间定义为1天指标&邻近2天指标
 	transaction_in, transaction_out = basic.Client_get_transaction()
 	counts = len(transaction_out)
+	print("请输入检查的比例")
 	percent = float(input())
 	if(counts >= 100):
 		transactions = []
