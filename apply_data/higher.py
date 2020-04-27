@@ -7,8 +7,6 @@ def Client_whether_launder_many_transaction():
 	#first_case:短时间大量交易，其中短时间定义为1天指标&邻近2天指标
 	transaction_in, transaction_out = basic.Client_get_transaction()
 	counts = len(transaction_out)
-	print("请输入检查的比例")
-	percent = float(input())
 	if(counts >= 100):
 		transactions = []
 		for transaction in transaction_out:
@@ -20,20 +18,22 @@ def Client_whether_launder_many_transaction():
 		days = math.ceil((max - min) / day_len)
 		print(days)
 		days_counts = [0] * days
-		print(days_counts)
 		for transaction in new_transactions:
 			day_number = math.floor((transaction - min) / day_len)
 			days_counts[day_number] += 1
+		print(days_counts)
+		print("请输入检查的比例")
+		percent = float(input())
 		for day_number in range(days):
 			if(days_counts[day_number] >= counts * percent):
-				print("该节点可能发生了洗钱交易")
+				print("该节点可能发生了洗钱交易1")
 				return True
 			else:
 				if(day_number >= 1 and days_counts[day_number - 1] + days_counts[day_number] >= counts * percent * 2):
-					print("该节点可能发生了洗钱交易")
+					print("该节点可能发生了洗钱交易2")
 					return True
 				if(day_number <= days - 2 and days_counts[day_number] + days_counts[day_number + 1] >= counts * percent * 2):
-					print("该节点可能发生了洗钱交易")
+					print("该节点可能发生了洗钱交易3")
 					return True
 	return False
 
