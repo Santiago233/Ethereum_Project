@@ -82,7 +82,7 @@ def Client_whether_theft():
 		concrete_transaction["way"] = "to"
 		transactions.append(concrete_transaction)
 	new_transactions = sorted(transactions, key = lambda e:e["time"])
-	#判断数值中的异常——时间、频率、金额、对象
+	#判断数值中的异常——时间、频率、金额、对象——分组的per和avg进行比较
 	time_min = new_transactions[0]["time"]
 	time_max = new_transactions[len(new_transactions) - 1]["time"]
 	value_avg = 0
@@ -97,8 +97,8 @@ def Client_whether_theft():
 	days_counts = math.ceil((time_max - time_min) / day_len)
 	if(days_counts != 0):
 		count_avg = len(new_transactions) / days_counts
-	print("以下为平均情况(数目、金额、交易对象)")
-	print(count_avg, value_avg, way_avg)
+	#print("以下为平均情况(数目、金额、交易对象)")
+	#print(count_avg, value_avg, way_avg)
 
 	for days in range(days_counts):
 		value_per = 0
@@ -118,8 +118,8 @@ def Client_whether_theft():
 			value_per = value_per / count_per
 		if(way_to != 0):
 			way_per = way_from / way_to
-		print("以下为单个情况(数目、金额、交易对象)")
-		print(count_per, value_per, way_per)
+		#print("以下为单个情况(数目、金额、交易对象)")
+		#print(count_per, value_per, way_per)
 		if(count_per < count_avg * 0.85 or count_per > count_avg * 1.15):
 			if(abs(count_per - count_avg) > 20):
 				print("该节点交易时间&频率出现异常，可能发生了盗用")
