@@ -13,14 +13,14 @@ def Client_whether_launder_many_transaction(address):
 		for transaction in transaction_out:
 			transactions.append(eval(transaction["transaction"]["timestamp"]))
 		new_transactions = sorted(transactions)
-		min = new_transactions[0]
-		max = new_transactions[counts - 1]
+		time_min = new_transactions[0]
+		time_max = new_transactions[counts - 1]
 		day_len = 60 * 60 * 24
-		days = math.ceil((max - min) / day_len)
+		days = math.ceil((time_max - time_min) / day_len)
 		#print(days)
 		days_counts = [0] * days
 		for transaction in new_transactions:
-			day_number = math.floor((transaction - min) / day_len)
+			day_number = math.floor((transaction - time_min) / day_len)
 			days_counts[day_number] += 1
 		#print(days_counts)
 		#print("请输入检查的比例")
@@ -71,18 +71,65 @@ def Client_whether_theft():
 	transactions = []
 	for transaction in transaction_in:
 		concrete_transaction = {}
-		concrete_transaction["time"] = transaction["transaction"]["timestamp"]
+		concrete_transaction["time"] = eval(transaction["transaction"]["timestamp"])
 		concrete_transaction["value"] = len(transaction["transaction"]["value"])
 		concrete_transaction["way"] = "from"
 		transactions.append(concrete_transaction)
 	for transaction in transaction_out:
 		concrete_transaction = {}
-		concrete_transaction["time"] = transaction["transaction"]["timestamp"]
+		concrete_transaction["time"] = eval(transaction["transaction"]["timestamp"])
 		concrete_transaction["value"] = len(transaction["transaction"]["value"])
 		concrete_transaction["way"] = "to"
 		transactions.append(concrete_transaction)
 	new_transactions = sorted(transactions, key = lambda e:e["time"])
 	#判断数值中的异常——时间、频率、金额、对象
+	time_min = new_transactions[0]["time"]
+	time_max = new_transactions[len(new_transactions) - 1]["time"]
+	value_avg = 0
+	way_avg = 0
+	if(len(transaction_out) != 0):
+		way_avg = len(transaction_in) / len(transaction_out)
+	for transaction in new_transactions:
+		value_avg += transaction["value"]
+	if(len(transaction_out) != 0):
+		value_avg = value_avg / (len(new_transactions))
+	day_len = 60 * 60 *24
+	days_counts = math.ceil((time_max - time_min) / day_len)
+	if(days_counts != 0):
+		count_avg = len(new_transactions) / days_counts
+	print("以下为平均情况(数目、金额、交易对象)")
+	print(count_avg, value_avg, way_avg)
+
+	for days in range(days_counts):
+		value_per = 0
+		count_per = 0
+		way_per = 0
+		way_from = 0
+		way_to = 0
+		for transaction in new_transactions:
+			if(transaction["time"] >= time_min + days * day_len and transaction["time"] < time_min + (days + 1) * day_len):
+				value_per += transaction["value"]
+				count_per += 1
+				if(transaction["way"] == "from"):
+					way_from += 1
+				else:
+					way_to += 1
+		if(count_per != 0):
+			value_per = value_per / count_per
+		if(way_to != 0):
+			way_per = way_from / way_to
+		print("以下为单个情况(数目、金额、交易对象)")
+		print(count_per, value_per, way_per)
+		if(count_per < count_avg * 0.85 or count_per > count_avg * 1.15):
+			print("该节点交易时间&频率出现异常，可能发生了盗用")
+			return
+		if(value_per < value_avg * 0.85 or value_per > value_avg * 1.15):
+			print("该节点交易金额出现异常，可能发生了盗用")
+			return
+		if(way_per < way_avg * 0.85 or way_per > way_avg * 1.15):
+			print("该节点交易对象出现异常，可能发生了盗用")
+			return
+	print("该节点尚未发生盗用")
 
 def Client_whether_tax_evasion():
 	in_count, out_count = basic.Client_find_degree_by_transaction()	#出度是in_count，入度是out_count
