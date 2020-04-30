@@ -121,8 +121,9 @@ def Client_whether_theft():
 		print("以下为单个情况(数目、金额、交易对象)")
 		print(count_per, value_per, way_per)
 		if(count_per < count_avg * 0.85 or count_per > count_avg * 1.15):
-			print("该节点交易时间&频率出现异常，可能发生了盗用")
-			return
+			if(abs(count_per - count_avg) > 20):
+				print("该节点交易时间&频率出现异常，可能发生了盗用")
+				return
 		if(value_per < value_avg * 0.85 or value_per > value_avg * 1.15):
 			print("该节点交易金额出现异常，可能发生了盗用")
 			return
