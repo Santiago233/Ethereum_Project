@@ -6,7 +6,7 @@ Project for my Graduation paper
 Step1：getBlock.sh、getReceipt.sh
 因为Block和NormalTransaction只需要block和receipt两个部分，所以只需要获取这两部分便可(实际上运行getBlcok.sh得到的数据便够用)
 
-数据的获取过程利用parity，需要先本地节点同步了数据才能运行脚本，否则获取都是null数据
+数据获取前需要parity(官网下载即可)在本地节点同步数据，同时运行脚本时保持parity运行状态，否则获取到的都是null数据
 
 获取的block数据结构有：result{author、difficulty、extraData、gasLimit、gasUsed、hash、logsBloom、miner、mixHash、nonce、number、parentHash、receiptsRoot、sealFields[,]、sha3Uncles、size、stateRoot、timestamp、totalDifficulty、transactions[{blockHash,blockNumber,chainId,condition,creates,from,gas,gasPrice,hash,input,nonce,publicKey,r,raw,s,standardV,to,transactionIndex,v,value},{}...]、transactionsRoot、uncles[]}
 
