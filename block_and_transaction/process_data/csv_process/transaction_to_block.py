@@ -1,7 +1,7 @@
 import pandas as pd
 
-source_filename = "J:\\Transaction_new.csv"
-dest_filename = "J:\\Transaction_to_Block.csv"
+source_filename = "Transaction_new.csv"
+dest_filename = "Transaction_to_Block.csv"
 
 '''
 source = pd.read_csv(source_filename, usecols=[' transactionHash', 'blockNumber'], low_memory=False)

@@ -2,7 +2,7 @@
 import csv
 import sys
 
-filename = "J:\\Transaction.csv"
+filename = "Transaction.csv"
 
 with open(filename,'rb') as csvfile:
 	header = next(csvfile)

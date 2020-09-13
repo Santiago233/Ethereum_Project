@@ -3,9 +3,9 @@ import csv
 import pandas as pd
 import os
 
-filename = "J:\\Transaction.csv"
-tmpfilename = "J:\\Transaction_tmp.csv"
-destfilename = "J:\\Clients_new.csv"
+filename = "Transaction.csv"
+tmpfilename = "Transaction_tmp.csv"
+destfilename = "Clients_new.csv"
 
 #csv文件太大，影响读取速度，选择csv文件部分读取
 

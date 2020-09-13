@@ -10,7 +10,7 @@ Step1：getBlock.sh、getReceipt.sh
 
 获取的block数据结构有：result{author、difficulty、extraData、gasLimit、gasUsed、hash、logsBloom、miner、mixHash、nonce、number、parentHash、receiptsRoot、sealFields[,]、sha3Uncles、size、stateRoot、timestamp、totalDifficulty、transactions[{blockHash,blockNumber,chainId,condition,creates,from,gas,gasPrice,hash,input,nonce,publicKey,r,raw,s,standardV,to,transactionIndex,v,value},{}...]、transactionsRoot、uncles[]}
 
-获取的receipt数据结构有：result[{blockHash、blockNumber、contractAddress、cumulativeGasUsed、from、gasUsed、logs[{address、blockHash、blockNumber、data、logIndex、removed、topics[,...]、transactionHash、transactionIndex、transactionLogIndex、type},{}...]、logsBloom、root、to、transactionHash、transactionIndex},{}...]
+获取的receipt数据结构有：result[{blockHash、blockNumber、contractAddress、cumulativeGasUsed、from、gasUsed、logs[{address、blockHash、blockNumber、data、logIndex、removed、topics[,...]、transactionHash、transactionIndex、transactionLogIndex、type},{}...]、logsBloom、status、to、transactionHash、transactionIndex},{}...]
 
 block文件夹和receipt文件夹分别是分类获取的数据文件夹(为了方便测试，选取了部分重复数据，blockNumber为0xb7acf)
 

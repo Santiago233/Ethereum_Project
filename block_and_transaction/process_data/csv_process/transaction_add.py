@@ -4,8 +4,8 @@ import os
 import sys
 import csv
 
-source_filename = "J:\\Transaction_tmp.csv"
-dest_filename = "J:\\Transaction_new.csv"
+source_filename = "Transaction_tmp.csv"
+dest_filename = "Transaction_new.csv"
 
 #添加id的索引，方便后面生成关系的csv文件
 with open(source_filename, 'r', encoding='UTF-8') as csvfile:

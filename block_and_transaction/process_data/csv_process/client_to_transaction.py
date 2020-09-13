@@ -1,8 +1,8 @@
 import pandas as pd
 
-source_filename = "J:\\Transaction_new.csv"
-dest_filename_in = "J:\\Client_to_Transaction.csv"
-dest_filename_out = "J:\\Transaction_to_Client.csv"
+source_filename = "Transaction_new.csv"
+dest_filename_in = "Client_to_Transaction.csv"
+dest_filename_out = "Transaction_to_Client.csv"
 
 #client to transaction
 source_in = pd.read_csv(source_filename, usecols = ['id', 'from'], low_memory=False)
