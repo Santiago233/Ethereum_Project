@@ -1,0 +1,8 @@
+# GraduationProject
+Further work for my Graduation paper
+
+本project中使用的数据库为SQL数据库(社区版本)
+
+Ubuntu18.04可以直接指令安装最新版本的SQL数据库
+
+get_data文件夹下代码用于拉取ethereum数据，process_data文件夹下代码用于处理拉取的ethereum数据
