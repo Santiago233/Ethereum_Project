@@ -104,13 +104,13 @@ void get(int first, int second, string table_name, MYSQL mysql){
 				sprintf(sql, "insert into %s(Contract, blockNumber, Timestamp, transactionHash, tx_from, tx_to, input, value) values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",\
 					(char *)table_name.data(), (char *)to.data(), (char *)number.data(), (char *)timestamp.data(), (char *)hash.data(), (char *)from.data(), (char *)to.data(), (char *)input.data(), (char *)value.data());
 				//cout << sql <<endl;
-				bool ret = mysql_query(&mysql, sql);
+				/*bool ret = mysql_query(&mysql, sql);
 				if(ret){
 					cout << "写入数据失败！" << endl;
 				}else{
 					cout << "写入数据成功！" << endl;
-				}
-				//mysql_query(&mysql, sql);
+				}*/
+				mysql_query(&mysql, sql);
 			}
 		}
 	}
