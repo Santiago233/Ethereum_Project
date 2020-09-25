@@ -1,4 +1,4 @@
-# GraduationProject
+# Ethereum_Project
 Project for my Graduation paper
 
 将get_data文件夹下代码自主拉取的ethereum数据导入csv文件并对csv文件进一步处理

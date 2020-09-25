@@ -1,4 +1,4 @@
-# GraduationProject
+# Ethereum_Project
 Project for my Graduation paper
 
 本project中使用的图数据库为neo4j图数据库(社区版本)

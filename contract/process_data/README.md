@@ -1,4 +1,4 @@
-# GraduationProject
+# Ethereum_Project
 Further work for my Graduation paper
 
 Way One:

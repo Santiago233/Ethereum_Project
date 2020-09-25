@@ -1,4 +1,4 @@
-# GraduationProject
+# Ethereum_Project
 Further work for my Graduation paper
 
 本project中使用的数据库为SQL数据库(社区版本)
