@@ -11,7 +11,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-int first_num = 1500;
+int first_num = 7000;
 int second_num = 1000;
 
 void get(int, int, string, MYSQL);
@@ -82,6 +82,8 @@ void get(int first, int second, string table_name, MYSQL mysql){
 	//cout << timestamp << " " << number << endl;
 
 	int transactionCount = blockresult["transactions"].size();
+
+	int count = 0;
 	for(int i = 0 ; i < transactionCount; i++){
 		if(!receiptresult[i]["status"].is_null()){
 			string status = receiptresult[i]["status"];
@@ -104,15 +106,17 @@ void get(int first, int second, string table_name, MYSQL mysql){
 				sprintf(sql, "insert into %s(Contract, blockNumber, Timestamp, transactionHash, tx_from, tx_to, input, value) values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",\
 					(char *)table_name.data(), (char *)to.data(), (char *)number.data(), (char *)timestamp.data(), (char *)hash.data(), (char *)from.data(), (char *)to.data(), (char *)input.data(), (char *)value.data());
 				//cout << sql <<endl;
-				/*bool ret = mysql_query(&mysql, sql);
+				bool ret = mysql_query(&mysql, sql);
 				if(ret){
 					cout << "写入数据失败！" << endl;
 				}else{
-					cout << "写入数据成功！" << endl;
-				}*/
-				mysql_query(&mysql, sql);
+					//cout << "写入数据成功！" << endl;
+					count ++;
+				}
+				//mysql_query(&mysql, sql);
 			}
 		}
 	}
 	//cout << "Block" << blockNumber << " finished" << endl;
+	cout << "Block" << blockNumber << " 写入数据" << count << "条" << endl;
 }

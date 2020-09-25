@@ -1,4 +1,4 @@
-# GraduationProject
+# Ethereum_Project
 Project for my Graduation paper & Further work
 
 block_and_transaction为毕业设计项目、contract为实验室项目
