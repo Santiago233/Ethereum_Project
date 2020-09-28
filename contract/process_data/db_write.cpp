@@ -18,7 +18,7 @@ void get(int, int, string, MYSQL);
 
 int main(){
 	const char user[] = "root";
-	const char pswd[] = "root";
+	const char pswd[] = "12345678";
 	const char host[] = "localhost";
 	const char database[] = "ethereum";
 	unsigned int port = 3306;
@@ -51,12 +51,23 @@ int main(){
 		cout << "创建数据表成功！" << endl;
 	}
 
-	for(int i = 0; i < first_num; i++){
+	/*for(int i = 0; i < first_num; i++){
+		for(int j = 0; j < second_num; j++){
+			get(i, j, table_name, mysql);
+		}
+		cout << i * second_num << "Block finished！" << endl;
+	}*/
+	for(int i = 242; i < second_num; i++)
+		get(5814, i, table_name, mysql);
+	cout << 5814000 << "Block finished！" << endl;
+
+	for(int i = 5815; i < first_num; i++){
 		for(int j = 0; j < second_num; j++){
 			get(i, j, table_name, mysql);
 		}
 		cout << i * second_num << "Block finished！" << endl;
 	}
+	//因为导入5814k高度的数据时出现bug中止，修改代码后从中止处开始继续导入，修改循环
 
 	return 0;
 }
@@ -94,6 +105,8 @@ void get(int first, int second, string table_name, MYSQL mysql){
 				string from = blockresult["transactions"][i]["from"].get<string>();
 				//cout << from << endl;
 				string input = blockresult["transactions"][i]["input"].get<string>();
+				if(input.length() > 1024)
+					input = input.substr(0, 1024);
 				//cout << input << endl;
 				string to = "";	//可能to数据是null
 				if(!blockresult["transactions"][i]["to"].is_null())
